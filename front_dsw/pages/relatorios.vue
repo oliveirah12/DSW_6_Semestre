@@ -1,10 +1,12 @@
 <template>
   <div class="page-container">
     <!-- Seu conteúdo de componente aqui -->
-    <button @click="listarRelatorios">Listar Relatórios</button>
+    <button @click="listarRelatorios" style="outline: 2px solid black; border-radius: 2px; padding: 5px;">Listar Relatórios</button>
+    <br>
     <div v-if="listaRelatorios.length != 0">
       <p v-for="relatorio in listaRelatorios">
-        Umidade: {{ relatorio.umidade }}
+        relatorioooo: {{ relatorio }}
+        <hr><br>
       </p>
     </div>
   </div>

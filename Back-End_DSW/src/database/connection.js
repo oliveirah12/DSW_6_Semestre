@@ -3,8 +3,8 @@ var knex = require('knex')({
     connection: { 
         host: 'localhost',   
         user: 'root',  
-        password : 'iago',       
-        database : 'relatorios'    
+        password : 'mat2101',       
+        database : 'estufa'    
     }
 }); 
 module.exports = knex
