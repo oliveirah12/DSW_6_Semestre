@@ -1,10 +1,10 @@
 var knex = require('knex')({ 
-    client: 'mysql', 
+    client: 'mysql2', 
     connection: { 
         host: 'localhost',   
         user: 'root',  
-        password : 'password',       
-        database : 'relatorios'    
+        password : 'mat2101',       
+        database : 'estufa'    
     }
 }); 
 module.exports = knex
