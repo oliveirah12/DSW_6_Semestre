@@ -1,13 +1,26 @@
 <template>
   <div class="page-container">
-    <!-- Seu conteúdo de componente aqui -->
     <button @click="listarRelatorios" style="outline: 2px solid black; border-radius: 2px; padding: 5px;">Listar Relatórios</button>
     <br>
-    <div v-if="listaRelatorios.length != 0">
-      <p v-for="relatorio in listaRelatorios">
-        relatorioooo: {{ relatorio }}
-        <hr><br>
-      </p>
+    <div v-if="listaRelatorios.length !== 0" class="table-container">
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Hora</th>
+            <th>Umidade (%)</th>
+            <th>Temperatura (°C)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="relatorio in listaRelatorios" :key="relatorio.Id">
+            <td>{{ formatarData(relatorio.data) }}</td>
+            <td>{{ relatorio.hora }}</td>
+            <td>{{ relatorio.umidade }}%</td>
+            <td>{{ relatorio.temperatura }}°C</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
@@ -15,46 +28,25 @@
 <script>
 import axios from 'axios';
 
-
 export default {
-    // Não vale mais, pois é do antigo Nuxt 2
-  // async asyncData({$http }) {
-  //     const response = await axios.get(`http://localhost:4000/relatorio`)
-  //     // const post = await $http.$get(`https://api.nuxtjs.dev/posts/${params.id}`)
-  //     const listaRelatorios = response.data;
-  //     console.log(response.data)
-  //     return { listaRelatorios }
-  // },
-  // Executado quando a página carrega
   async setup() {
-    // const { data, error } = useFetch(
-    //   "https://jsonplaceholder.typicode.com/posts"
-    // );
     const response = await axios.get(`http://localhost:4000/relatorio`)
     const listaRelatorios = response.data;
-    console.log(response.data)
     return { listaRelatorios };
   },
-  data: function(){
-    return {listaRelatorios: []}
-  },
-  // Não vale mais, pois é do antigo Nuxt 2
-  // async fetch() {
-  //     const response = await axios.get(`http://localhost:4000/relatorio`)
-  //     this.listaRelatorios = response.data;
-  //     console.log(response.data)
-  // },
   methods: {
     listarRelatorios() {
       axios.get('http://localhost:4000/relatorio')
         .then(response => {
-          // Manipule a resposta dos relatórios aqui
-          console.log(response.data);
-          this.listaRelatorios2 = response.data;
+          this.listaRelatorios = response.data;
         })
         .catch(error => {
           console.error('Erro ao listar relatórios:', error);
         });
+    },
+    formatarData(data) {
+      const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+      return new Date(data).toLocaleDateString('pt-BR', options);
     }
   }
 }
@@ -67,5 +59,27 @@ export default {
   align-items: center;
   height: 100vh;
   flex-direction: column;
+}
+
+.table-container {
+  width: 80%;
+  margin-top: 20px;
+  overflow-y: auto; /* Adiciona a barra de rolagem vertical */
+}
+
+.custom-table {
+  width: 100%; /* Ajustado para 100% para preencher o contêiner */
+  border-collapse: collapse;
+}
+
+.custom-table th, .custom-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.custom-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
 }
 </style>
