@@ -21,7 +21,7 @@
       },
       redirectToControle() {
         
-        this.$router.push('/'); 
+        this.$router.push('/controle'); 
       },
       redirectToRelatorios() {
         
