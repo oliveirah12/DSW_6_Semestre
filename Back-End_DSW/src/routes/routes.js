@@ -4,7 +4,6 @@ const router = express.Router()
 const ReportsController = require('../controllers/ReportsController')
 const controlesController = require('../controllers/controlesController')
 
-const router = express.Router();
 
 // Rotas para relatórios
 router.post('/novoRelatorio', ReportsController.novoRelatorio);
