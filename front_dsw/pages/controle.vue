@@ -13,6 +13,7 @@
     
   <script setup>
   import { ref } from 'vue';
+  import axios from 'axios';
   
   
   const showManualButtons = ref(false);
@@ -25,15 +26,23 @@
     }
   };
   
-  const ligar = () => {
-    // Implemente a lógica para ligar
-    console.log('Ligado');
-  };
+    const ligar = async () => {
+        try {
+            const response = await axios.put(`http://localhost:4000/ligar/controles/1`);
+            console.log(response.data);
+        } catch (error) {
+            console.error('Erro ao desligar:', error);
+        }
+    };
   
-  const desligar = () => {
-    // Implemente a lógica para desligar
-    console.log('Desligado');
-  };
+    const desligar = async () => {
+        try {
+            const response = await axios.put(`http://localhost:4000/desligar/controles/1`);
+            console.log(response.data);
+        } catch (error) {
+            console.error('Erro ao desligar:', error);
+        }
+    };
   </script>
     
   <style lang="scss" scoped>
