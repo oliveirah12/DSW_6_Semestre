@@ -38,7 +38,6 @@ class controlesController {
                 comando_valvula: 0
             })
             .then(data => {
-                // Não envie a resposta aqui, aguarde a segunda atualização
             })
             .then(() => {
                 // Agora, após ambas as atualizações, envie a resposta
@@ -48,6 +47,8 @@ class controlesController {
                 response.json(error);
             });
     }
+
+    
 }
 
 module.exports = new controlesController();

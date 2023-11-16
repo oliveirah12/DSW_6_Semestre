@@ -14,6 +14,7 @@
   <script setup>
   import { ref } from 'vue';
   
+  
   const showManualButtons = ref(false);
   
   const toggleManual = (mode) => {

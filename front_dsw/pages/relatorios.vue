@@ -28,6 +28,7 @@
 <script>
 import axios from 'axios';
 
+
 export default {
   async setup() {
     const response = await axios.get(`http://localhost:4000/relatorio`)
@@ -36,7 +37,7 @@ export default {
   },
   methods: {
     listarRelatorios() {
-      axios.get('http://localhost:4000/relatorio')
+      axios.get(`http://localhost:4000/relatorio`)
         .then(response => {
           this.listaRelatorios = response.data;
         })
