@@ -1,12 +1,13 @@
-require('dotenv').config();
+const dotenv = require('dotenv');
+const path = require('path');
 
-//Crie um Arquivo chamado ".env" e coloque os dados do seu banco desse jeito nele:
+dotenv.config({ path: path.resolve(__dirname, '.env') });
+//Crie um Arquivo na pasta raíz chamado ".env" e coloque os dados do seu banco desse jeito nele:
 //DB_HOST=''
 //DB_USER=''
 //DB_PASSWORD=''
 //DB_NAME=''
 //DB_PORT=''
-
 
 var knex = require('knex')({ 
     client: 'mysql2', 
