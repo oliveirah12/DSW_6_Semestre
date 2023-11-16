@@ -13,9 +13,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="relatorio in listaRelatorios" :key="relatorio.Id">
-            <td>{{ formatarData(relatorio.data) }}</td>
-            <td>{{ relatorio.hora }}</td>
+          <tr v-for="relatorio in listaRelatorios" :key="relatorio.id">
+            <td>{{ formatarData(relatorio.timestamp) }}</td>
+            <td>{{ formatarHora(relatorio.timestamp) }}</td>
             <td>{{ relatorio.umidade }}%</td>
             <td>{{ relatorio.temperatura }}°C</td>
           </tr>
@@ -31,7 +31,7 @@ import axios from 'axios';
 
 export default {
   async setup() {
-    const response = await axios.get(`http://localhost:4000/relatorio`)
+    const response = await axios.get('http://localhost:4000/relatorio');
     const listaRelatorios = response.data;
     return { listaRelatorios };
   },
@@ -48,6 +48,10 @@ export default {
     formatarData(data) {
       const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
       return new Date(data).toLocaleDateString('pt-BR', options);
+    },
+    formatarHora(data) {
+      const options = { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false };
+      return new Date(data).toLocaleTimeString('pt-BR', options);
     }
   }
 }
