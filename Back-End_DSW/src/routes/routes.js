@@ -3,8 +3,6 @@ const express = require('express')
 const router = express.Router()
 const ReportsController = require('../controllers/ReportsController')
 const controlesController = require('../controllers/controlesController')
-const StatusController = require('../controllers/StatusController');
-
 
 
 // Rotas para relatórios
