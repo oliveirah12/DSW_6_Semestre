@@ -48,6 +48,18 @@ class controlesController {
             });
     }
 
+    listarControles(request, response) {
+        database
+            .select("*")
+            .table("ControleIrrigacao") 
+            .then((controles) => {
+                response.json(controles);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
     
 }
 
