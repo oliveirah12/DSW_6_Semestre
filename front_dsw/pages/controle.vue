@@ -7,7 +7,6 @@
         <table class="custom-table">
           <thead>
             <tr>
-              <th>ID Controle</th>
               <th>Estufa</th>
               <th>Bomba</th>
               <th>Válvula</th>
@@ -15,7 +14,6 @@
           </thead>
           <tbody>
             <tr v-for="controle in listaControles" :key="controle.id">
-              <td>{{ controle.id}}</td>
               <td>{{ controle.estufa_id }}</td>
               <td>{{ controle.comando_bomba === 1 ? "Ativa" : "Inativa"}}</td>
               <td>{{ controle.comando_valvula === 1 ? "Ativa" : "Inativa"}}</td>

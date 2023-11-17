@@ -27,7 +27,10 @@ router.get('/controlesIrrigacao', controlesController.listarControles)
 
 //Rotas de Estufas
 router.get('/estufas', StatusController.listarEstufas)
-router.get('/sistemas', StatusController.getStatusSistema)
+router.delete('/estufas/:id', StatusController.deleteStatus)
+router.post('/estufas/:id', StatusController.includeStatus)
 
+router.delete('/controles/:id', StatusController.deleteControles)
+router.delete('/dadosEstufa/:id', StatusController.deleteDadosEstufa)
 
 module.exports = router

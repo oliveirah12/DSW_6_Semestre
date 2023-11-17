@@ -29,10 +29,14 @@
               <td>{{ estufas.umidade }}</td>
               <td>{{ estufas.consumo_agua }}L/h</td>
               <td>{{ estufas.timestamp }}</td>
+              <td><button class="button_delete" @click="deletarEstufa(estufas.id)">Deletar</button></td>
             </tr>
           </tbody>
         </table>
       </div>
+      <br>
+      <br>
+      <button class="button_include">Incluir Estufa</button>
     </div>
     
   </template>
@@ -96,6 +100,17 @@
       return new Date(data).toLocaleTimeString('pt-BR', options);
     }
 
+
+    const deletarEstufa = async (id) => {
+      try {
+
+        const response = await axios.delete(`http://localhost:4000/estufas/${id}`)
+        console.log(response)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
   
   </script>
 
@@ -128,6 +143,37 @@
     transition: background-color 0.3s ease;
     width: 200px;
   }
+  .button_delete {
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 75%;
+  }
+
+  .button_include {
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 10%;
+  }
+  .button_include:hover {
+    background-color: #75aae2;
+  }
+
+  .button_delete:hover {
+    background-color: #75aae2;
+  }
+  
   
   .button:hover {
     background-color: #75aae2;
