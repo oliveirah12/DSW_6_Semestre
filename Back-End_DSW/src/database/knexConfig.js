@@ -1,6 +1,9 @@
-require('dotenv').config();
+const dotenv = require('dotenv');
+const path = require('path');
 
-//Crie um Arquivo chamado ".env" e coloque os dados do seu banco desse jeito nele:
+const envPath = path.resolve(__dirname, '.env');
+dotenv.config({ path: envPath });
+//Crie um Arquivo na pasta Back-End_DSW chamado ".env" e coloque os dados do seu banco desse jeito nele:
 //DB_HOST=''
 //DB_USER=''
 //DB_PASSWORD=''
@@ -13,7 +16,7 @@ var knex = require('knex')({
     connection: { 
         host: process.env.DB_HOST || 'localhost',   
         user: process.env.DB_USER || 'root',
-        password : process.env.DB_PASSWORD || '',       
+        password : process.env.DB_PASSWORD || 'root',       
         database : process.env.DB_NAME ||  'estufa'    
     }
 }); 

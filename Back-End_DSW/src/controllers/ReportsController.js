@@ -25,7 +25,6 @@ class ReportsController {
             .select("*")
             .table("DadosEstufa") // Altere para o novo nome da tabela
             .then((relatorios) => {
-                console.log(relatorios);
                 response.json(relatorios);
             })
             .catch((error) => {

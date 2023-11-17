@@ -24,7 +24,9 @@ router.get('/grafico', StatusController.getDadosGrafico);
 //console.log("Rotas configuradas:", router.stack.map(layer => layer.route.path));
 
 router.delete('/delete/relatorio/:id',ReportsController.removerRelatorio)
+
 router.put('/ligar/controles/:id', controlesController.ligarControle)
 router.put('/desligar/controles/:id', controlesController.desligarControle)
+router.get('/controlesIrrigacao', controlesController.listarControles)
 
 module.exports = router
