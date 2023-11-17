@@ -3,8 +3,7 @@ const database = require("../database/knexConfig.js")
 class controlesController {
     ligarControle(request, response){
         const id = request.params.id
-        const {comando_bomba} = request.body
-        const {comando_valvula} = request.body
+
        
 
         database('ControleIrrigacao')
