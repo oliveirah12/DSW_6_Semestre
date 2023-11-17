@@ -14,17 +14,17 @@ router.put('/atualizar/relatorio/:id', ReportsController.atualizarRelatorio);
 router.delete('/delete/relatorio/:id', ReportsController.removerRelatorio);
 
 // Rota para buscar dados de umidade, temperatura e status do sistema
+
 router.get('/temperatura-umidade', StatusController.getTemperaturaUmidade);
 router.get('/status-sistema', StatusController.getStatusSistema);
 router.get('/grafico', StatusController.getDadosGrafico);
 
 // Adicione logs para mostrar as rotas configuradas
-console.log("Rotas configuradas:", router.stack.map(layer => layer.route.path));
+
+//console.log("Rotas configuradas:", router.stack.map(layer => layer.route.path));
 
 router.delete('/delete/relatorio/:id',ReportsController.removerRelatorio)
-
 router.put('/ligar/controles/:id', controlesController.ligarControle)
-
 router.put('/desligar/controles/:id', controlesController.desligarControle)
 
 module.exports = router
