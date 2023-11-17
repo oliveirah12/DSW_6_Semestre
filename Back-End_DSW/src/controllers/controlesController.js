@@ -1,4 +1,4 @@
-const database = require("../database/connection")
+const database = require("../database/knexConfig.js")
 
 class controlesController {
     ligarControle(request, response){
