@@ -1,6 +1,6 @@
 const moment = require('moment');
-const DadosModel = require('../models/DadosModel');
-const database = require("../database/knexConfig.js")
+const database = require("../database/knexConfig");
+
 
 class StatusController {
 
@@ -30,5 +30,7 @@ class StatusController {
   }
 
 }
+
+
 
 module.exports = new StatusController();

@@ -19,6 +19,8 @@ class ReportsController {
     }
 
     listarRelatorios(request, response) {
+
+        console.log('cesar');
         database
             .select("*")
             .table("DadosEstufa") // Altere para o novo nome da tabela

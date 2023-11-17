@@ -16,12 +16,11 @@ router.delete('/delete/relatorio/:id', ReportsController.removerRelatorio);
 
 
 // Adicione logs para mostrar as rotas configuradas
-console.log("Rotas configuradas:", router.stack.map(layer => layer.route.path));
+
+//console.log("Rotas configuradas:", router.stack.map(layer => layer.route.path));
 
 router.delete('/delete/relatorio/:id',ReportsController.removerRelatorio)
 
-
-//Rotas de controle de irrigação
 router.put('/ligar/controles/:id', controlesController.ligarControle)
 router.put('/desligar/controles/:id', controlesController.desligarControle)
 router.get('/controlesIrrigacao', controlesController.listarControles)
