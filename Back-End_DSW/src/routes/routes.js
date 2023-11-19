@@ -1,29 +1,40 @@
-const connection = require('../database/connection')
+const connection = require('../database/knexConfig')
 const express = require('express')
 const router = express.Router()
-const ReportsController = require('../controllers/ReportsController')
+
+const relatorioController = require('../controllers/relatorioController')
 const controlesController = require('../controllers/controlesController')
+const StatusController = require('../controllers/StatusController'); 
+
+
+
+
 
 
 // Rotas para relatórios
-router.post('/novoRelatorio', ReportsController.novoRelatorio);
-router.get('/relatorio', ReportsController.listarRelatorios);
-router.get('/relatorio/:id', ReportsController.listarUmRelatorio);
-router.put('/atualizar/relatorio/:id', ReportsController.atualizarRelatorio);
-router.delete('/delete/relatorio/:id', ReportsController.removerRelatorio);
+//router.post('/novoRelatorio', relatorioController.create);
+router.get('/relatorio', relatorioController.all);
+//router.get('/relatorio/:id', relatorioController.one);
+//router.put('/atualizar/relatorio/:id', relatorioController.update);
+//router.delete('/delete/relatorio/:id', relatorioController.delete);
 
-// Rota para buscar dados de umidade, temperatura e status do sistema
-router.get('/temperatura-umidade', StatusController.getTemperaturaUmidade);
-router.get('/status-sistema', StatusController.getStatusSistema);
-router.get('/grafico', StatusController.getDadosGrafico);
 
-// Adicione logs para mostrar as rotas configuradas
-console.log("Rotas configuradas:", router.stack.map(layer => layer.route.path));
+//console.log("Rotas configuradas:", router.stack.map(layer => layer.route.path));
+//router.delete('/delete/relatorio/:id',relatorioController.removerRelatorio)
 
-router.delete('/delete/relatorio/:id',ReportsController.removerRelatorio)
 
 router.put('/ligar/controles/:id', controlesController.ligarControle)
-
 router.put('/desligar/controles/:id', controlesController.desligarControle)
+router.get('/controlesIrrigacao', controlesController.listarControles)
+
+
+
+//Rotas de Estufas
+router.get('/estufas', StatusController.listarEstufas)
+//router.delete('/estufas/:id', StatusController.deleteStatus)
+router.post('/estufas/:id', StatusController.includeStatus)
+
+//router.delete('/controles/:id', StatusController.deleteControles)
+//router.delete('/dadosEstufa/:id', StatusController.deleteDadosEstufa)
 
 module.exports = router

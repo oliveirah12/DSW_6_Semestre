@@ -1,4 +1,4 @@
-const database = require("../database/connection");
+const database = require("../database/knexConfig");
 
 class ReportsController {
     novoRelatorio(request, response) {
@@ -19,11 +19,12 @@ class ReportsController {
     }
 
     listarRelatorios(request, response) {
+
+        console.log('cesar');
         database
             .select("*")
             .table("DadosEstufa") // Altere para o novo nome da tabela
             .then((relatorios) => {
-                console.log(relatorios);
                 response.json(relatorios);
             })
             .catch((error) => {

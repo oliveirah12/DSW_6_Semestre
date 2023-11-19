@@ -1,51 +1,69 @@
-const database = require("../database/connection")
+const database = require("../database/knexConfig.js")
+const Controle = require("../../orm/models/controleirrigacao")
 
 class controlesController {
-    ligarControle(request, response){
-        const id = request.params.id
-        const {comando_bomba} = request.body
-        const {comando_valvula} = request.body
-       
+    async ligarControle(request, response) {
+        try {
+            const id = request.params.id;
+    
+            const controle = await Controle.findOne({ where: { id } })
+    
+            if (!controle) {
+                return response.status(400).json("Data not found");
+            }
+    
+            controle.comando_bomba = true;
+            controle.comando_valvula = true;
 
-        database('ControleIrrigacao')
-            .where({ id: id })
-            .update({
-                comando_bomba: 1,
-                comando_valvula: 1
-            })
-            .then(data => {
-                // Não envie a resposta aqui, aguarde a segunda atualização
-            })
-            .then(() => {
-                // Agora, após ambas as atualizações, envie a resposta
-                response.json({ message: "Bomba e Valvula ligadas"});
-            })
-            .catch(error => {
-                response.json(error);
-            });
+            await controle.save();
+            response.status(200).json("Ligados");
+        } catch (error) {
+            console.error(error);
+            response.status(500).send(error);
+        }
     }
 
-    desligarControle(request, response){
-        const id = request.params.id
-        const {comando_bomba} = request.body
-        const {comando_valvula} = request.body
-       
+    async desligarControle(request, response){
 
-        database('ControleIrrigacao')
-            .where({ id: id })
-            .update({
-                comando_bomba: 0,
-                comando_valvula: 0
+        try {
+            const id = request.params.id;
+    
+            const controle = await Controle.findOne({ where: { id } });
+    
+            if (!controle) {
+                return response.status(400).json("Data not found");
+            }
+    
+            controle.comando_bomba = false;
+            controle.comando_valvula = false;
+    
+            await controle.save();
+
+            response.status(200).json("Desligados");
+        } catch (error) {
+            console.error(error);
+            response.status(500).send(error);
+        }
+    }
+
+    async listarControles(request, response) {
+        /*database
+            .select("*")
+            .table("ControleIrrigacao") 
+            .then((controles) => {
+                response.json(controles);
             })
-            .then(data => {
-            })
-            .then(() => {
-                // Agora, após ambas as atualizações, envie a resposta
-                response.json({ message: "Bomba e Valvula desligadas"});
-            })
-            .catch(error => {
-                response.json(error);
-            });
+            .catch((error) => {
+                console.log(error);
+            });*/
+
+            try {
+                const controle = await Controle.findAll();
+                response.status(200).json(controle);
+              } catch (error) {
+                console.log(error);
+                response.status(400).send(error);
+              }
     }
 
     

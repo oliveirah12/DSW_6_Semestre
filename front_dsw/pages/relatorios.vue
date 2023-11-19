@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <button @click="listarRelatorios" style="outline: 2px solid black; border-radius: 2px; padding: 5px;">Listar Relatórios</button>
+    <button class="button" @click="listarRelatorios">Listar Relatórios</button>
     <br>
     <div v-if="listaRelatorios.length !== 0" class="table-container">
       <table class="custom-table">
@@ -14,8 +14,8 @@
         </thead>
         <tbody>
           <tr v-for="relatorio in listaRelatorios" :key="relatorio.id">
-            <td>{{ formatarData(relatorio.timestamp) }}</td>
-            <td>{{ formatarHora(relatorio.timestamp) }}</td>
+            <td>{{ relatorio.data }}</td>
+            <td>{{ relatorio.hora  }}</td>
             <td>{{ relatorio.umidade }}%</td>
             <td>{{ relatorio.temperatura }}°C</td>
           </tr>
@@ -87,4 +87,41 @@ export default {
   background-color: #f2f2f2;
   font-weight: bold;
 }
+
+.button {
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 170px;
+  }
+  
+  .button:hover {
+    background-color: #75aae2;
+  }
+  
+  .manual-buttons {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .manual-buttons button {
+    margin: 5px;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100px;
+  }
+  
+  .manual-buttons button:hover {
+    background-color: #75aae2;
+  }
 </style>
