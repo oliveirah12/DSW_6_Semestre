@@ -1,5 +1,4 @@
 const connection = require('../database/knexConfig')
-const connection = require('../database/knexConfig')
 const express = require('express')
 const router = express.Router()
 
