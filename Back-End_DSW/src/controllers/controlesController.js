@@ -57,26 +57,16 @@ class controlesController {
                 console.log(error);
             });*/
 
-            try {
-                const controle = await Controle.findAll();
-                response.status(200).json(controle);
-              } catch (error) {
-                console.log(error);
-                response.status(400).send(error);
-              }
+        try {
+            const controle = await Controle.findAll();
+            response.status(200).json(controle);
+        } catch (error) {
+            console.log(error);
+            response.status(400).send(error);
+        }
     }
 
-    listarControles(request, response) {
-        database
-            .select("*")
-            .table("ControleIrrigacao") 
-            .then((controles) => {
-                response.json(controles);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }
+    
 
     
 }
