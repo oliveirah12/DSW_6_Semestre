@@ -4,7 +4,8 @@ const router = express.Router()
 
 const relatorioController = require('../controllers/relatorioController')
 const controlesController = require('../controllers/controlesController')
-const StatusController = require('../controllers/StatusController'); 
+const estufaController = require('../controllers/estufaController')
+const dadosEstufaController = require('../controllers/dadosEstufaController')
 
 
 
@@ -30,11 +31,14 @@ router.get('/controlesIrrigacao', controlesController.listarControles)
 
 
 //Rotas de Estufas
-router.get('/estufas', StatusController.listarEstufas)
+router.get('/estufas', estufaController.all)
 //router.delete('/estufas/:id', StatusController.deleteStatus)
-router.post('/estufas/:id', StatusController.includeStatus)
+//router.post('/estufas/:id', StatusController.includeStatus)
 
 //router.delete('/controles/:id', StatusController.deleteControles)
 //router.delete('/dadosEstufa/:id', StatusController.deleteDadosEstufa)
+
+//Rotas Dados Estufa
+//router.get('/dadosEstufas', dadosEstufaController.all)
 
 module.exports = router

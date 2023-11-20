@@ -10,7 +10,13 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       estufa_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'estufas', // Nome da tabela referenciada
+          key: 'id' // Nome da coluna referenciada
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       temperatura: {
         type: Sequelize.DECIMAL
@@ -31,7 +37,7 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      }
+      },
     });
   },
   async down(queryInterface, Sequelize) {

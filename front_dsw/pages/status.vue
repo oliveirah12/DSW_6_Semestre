@@ -24,11 +24,11 @@
               <td>{{ estufas.id}}</td>
               <td>{{ estufas.nome }}</td>
               <td>{{ estufas.localizacao }}</td>
-              <td>{{ estufas.capacidade }}</td>
-              <td>{{ estufas.temperatura }} Cº</td>
-              <td>{{ estufas.umidade }}</td>
-              <td>{{ estufas.consumo_agua }}L/h</td>
-              <td>{{ estufas.timestamp }}</td>
+              <td>{{ estufas.capacidade  }}</td>
+              <td>{{ estufas.dadosEstufa.temperatura }} Cº</td>
+              <td>{{ estufas.dadosEstufa.umidade }}</td>
+              <td>{{ estufas.dadosEstufa.consumo_agua }}L/h</td>
+              <td>{{ estufas.dadosEstufa.timestamp }}</td>
               <td><button class="button_delete" @click="deletarEstufa(estufas.id)">Deletar</button></td>
             </tr>
           </tbody>
@@ -50,29 +50,28 @@
     const listaSistemas = ref([])
 
     const listarEstufas = async () => {
-    const apiUrlEstufas = 'http://localhost:4000/estufas';
+      const apiUrlEstufas = 'http://localhost:4000/estufas';
 
-    try {
-      // Faz a requisição GET para a API usando o Fetch API
-        const response = await fetch(apiUrlEstufas);
-        console.log(response)
+      try {
+        // Faz a requisição GET para a API usando o Fetch API
+          const response = await fetch(apiUrlEstufas);
+          console.log(response)
+          if (!response.ok) {
+            throw new Error('Erro ao buscar dados linha 60');
+          }
 
-        if (!response.ok) {
-          throw new Error('Erro ao buscar dados');
+          listaEstufas.value = await response.json();
+
+          console.log(listaEstufas)
+
+
+          if(listaEstufas.length <= 0){
+            mensagemPadrao = "Sem estufas para visualização"
+          }
+
+        } catch (error) {
+          console.error('Erro ao buscar dados:', error);
         }
-
-        listaEstufas.value = await response.json();
-
-        console.log(listaEstufas)
-
-
-        if(listaEstufas.length <= 0){
-          mensagemPadrao = "Sem estufas para visualização"
-        }
-
-      } catch (error) {
-        console.error('Erro ao buscar dados:', error);
-      }
     }
 
     const listarSistemas = async () =>{

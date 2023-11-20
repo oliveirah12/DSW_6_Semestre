@@ -1,5 +1,4 @@
-const database = require("../database/knexConfig.js")
-const Controle = require("../../orm/models/controleirrigacao")
+const Controle = require("../../orm/models/controleIrrigacaoModel.js")
 
 class controlesController {
     async ligarControle(request, response) {
