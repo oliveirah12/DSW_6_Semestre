@@ -2,7 +2,25 @@
   <div class="page-container">
     <button class="button" @click= "listarEstufas">Listar status estufas</button>
     <br>
-    <div>{{ mensagemPadrao }}</div>
+    <div class="botoesIncluiExclui">
+        <button class="button_include" @click="mostrarFormulario" :style="{ backgroundColor: botaoIncluirDesabilitado ? 'gray' : '#007BFF', cursor:botaoIncluirDesabilitado ? 'not-allowed' : 'pointer'}" :disabled="botaoIncluirDesabilitado">Incluir Estufa</button>
+        <button class="button_include" v-if="exibirFormulario" @click="fecharFormulario">Cancelar</button>
+      </div>
+
+      <form class="form-incluirEstufa" v-if="exibirFormulario" @submit.prevent="adicionarEstufa">
+        <label for="nome">Nome: </label>
+        <input class="inputsForm" type="text" v-model="novaEstufa.nome" required />
+
+        <label for="localizacao">Localização: </label>
+        <input class="inputsForm" type="text" v-model="novaEstufa.localizacao" required />
+
+        <label for="capacidade">Capacidade: </label>
+        <input class="inputsForm" style="width: 75px;" type="number" @input=verificaCapacidade id="capacidadeEstufa" v-model="novaEstufa.capacidade" required />
+
+        <button class="button" type="submit" :style="{ backgroundColor: capacidadeInvalida ? 'gray' : '#007BFF', cursor:capacidadeInvalida ? 'not-allowed' : 'pointer'}" :disabled="capacidadeInvalida">Adicionar Estufa</button>
+
+
+      </form>
     <div v-if="listaEstufas.length !== 0" class="table-container">
         <table class="custom-table">
           <thead>
@@ -36,7 +54,11 @@
       </div>
       <br>
       <br>
-      <button class="button_include">Incluir Estufa</button>
+        
+     
+      
+
+
     </div>
     
   </template>
@@ -47,7 +69,6 @@
   
 
     const listaEstufas = ref([])
-    const listaSistemas = ref([])
 
     const listarEstufas = async () => {
       const apiUrlEstufas = 'http://localhost:4000/estufas';
@@ -61,38 +82,15 @@
           }
 
           listaEstufas.value = await response.json();
-
           console.log(listaEstufas)
 
 
-          if(listaEstufas.length <= 0){
-            mensagemPadrao = "Sem estufas para visualização"
-          }
 
         } catch (error) {
           console.error('Erro ao buscar dados:', error);
         }
     }
 
-    const listarSistemas = async () =>{
-      const apiUrlSistemas = 'http://localhost:4000/sistemas';
-      try{
-        const response = await fetch(apiUrlSistemas);
-        console.log(response)
-        
-        if (!response.ok) {
-          throw new Error('Erro ao buscar dados');
-        }
-
-        listaSistemas.value = await response.json();
-        console.log(listaSistemas)
-        if(listaSistemas.length <= 0){
-          mensagemPadrao = "Sem sistemas para visualização"
-        }
-      } catch (error) {
-        console.error('Erro ao buscar dados:', error);
-      }
-    }
     
    const formatarHora = (data) => {
       const options = { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false };
@@ -103,11 +101,92 @@
     const deletarEstufa = async (id) => {
       try {
 
-        const response = await axios.delete(`http://localhost:4000/estufas/${id}`)
+        const response = await axios.delete(`http://localhost:4000/deleteestufa/${id}`)
+        listarEstufas()
         console.log(response)
+        window.alert("Estufa Excluída")
       } catch (error) {
+        window.alert("Erro ao excluir estufa")
         console.log(error)
       }
+    }
+
+    const exibirFormulario = ref(false);
+    const novaEstufa = ref({
+      nome: '',
+      localizacao: '',
+      capacidade: 0,
+    });
+
+    const capacidadeInvalida = ref(true);
+    const verificaCapacidade = () => {
+      if (document.getElementById('capacidadeEstufa').value <= '0') {
+        capacidadeInvalida.value = true;
+      }else{
+        capacidadeInvalida.value = false;
+      }
+
+    }
+
+  
+  const adicionarEstufa = async () => {
+
+    botaoIncluirDesabilitado.value = true;
+    
+
+    try {
+      // Lógica para adicionar estufa à lista
+      const response = await axios.post(`http://localhost:4000/addestufa`, novaEstufa.value);
+
+      // Verifique a resposta da API conforme necessário
+      if (response.status === 200) {
+        // Adiciona a estufa à lista local
+        listaEstufas.value.push({
+          id: response.data.id,
+          ...novaEstufa.value,
+          dadosEstufa: {
+            temperatura: 0,
+            umidade: 0,
+            consumo_agua: 0,
+            timestamp: new Date().toLocaleString(),
+          },
+        });
+
+
+
+        exibirFormulario.value = false;
+        capacidadeInvalida.value = false;
+      }
+      window.alert("Estufa adicionada")
+      listarEstufas()
+      } catch (error) {
+        console.error('Erro na requisição:', error);
+        window.alert("Erro ao adicionar estufa")
+
+      } finally {
+        // Reabilita o botão após a adição ou erro
+        botaoIncluirDesabilitado.value = false;
+        exibirFormulario.value = false;
+        novaEstufa.value = {
+          nome: '',
+          localizacao: '',
+          capacidade: 0,
+          // Limpe mais campos conforme necessário
+      };
+    }
+  };
+
+
+    let botaoIncluirDesabilitado = ref(false);
+    const mostrarFormulario = () => {
+      exibirFormulario.value = true;
+      botaoIncluirDesabilitado = ref(true);
+    };
+
+    const fecharFormulario = () => {
+      exibirFormulario.value = false;
+      botaoIncluirDesabilitado = ref(false); 
+      listarEstufas()
     }
 
   
@@ -122,6 +201,24 @@
     align-items: center;
     height: 100vh;
     flex-direction: column;
+  }
+
+  .botoesIncluiExclui {
+    width: 100%; 
+    align-items: center; 
+    justify-content: center; 
+    display: flex;
+  }
+
+  .form-incluirEstufa{
+    border: 2px solid black;
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  .inputsForm{
+    margin-right: 10px;
+    border-bottom: 2px solid black;
   }
   
   .button-container {

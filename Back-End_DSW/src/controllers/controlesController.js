@@ -65,6 +65,16 @@ class controlesController {
         }
     }
 
+    async create(request, response) {
+        try {
+          await DadosEstufa.create(request.body);
+          response.status(200).json("Data inserted!!");
+        } catch (error) {
+          console.log(error);
+          response.status(400).send(error);
+        }
+      }
+
     
 
     

@@ -1,10 +1,17 @@
 const {Model, DataTypes} = require('sequelize');
 const sequelize = require("../config/db");
 
-  class ControleIrrigacao extends Model{}
+  class ControleIrrigacao extends Model{
+    static associate(models){
+      ControleIrrigacao.belongsTo('estufas', { foreignKey: 'estufa_id' });
+   }
+  }
 
   ControleIrrigacao.init(
   {
+    estufa_id:{
+      type: DataTypes.INTEGER,
+    },
     comando_bomba: {
       type: DataTypes.BOOLEAN,
     },

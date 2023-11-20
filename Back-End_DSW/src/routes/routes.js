@@ -32,8 +32,8 @@ router.get('/controlesIrrigacao', controlesController.listarControles)
 
 //Rotas de Estufas
 router.get('/estufas', estufaController.all)
-//router.delete('/estufas/:id', StatusController.deleteStatus)
-//router.post('/estufas/:id', StatusController.includeStatus)
+router.delete('/deleteestufa/:id', estufaController.delete)
+router.post('/addestufa', estufaController.create)
 
 //router.delete('/controles/:id', StatusController.deleteControles)
 //router.delete('/dadosEstufa/:id', StatusController.deleteDadosEstufa)

@@ -14,9 +14,9 @@
           </thead>
           <tbody>
             <tr v-for="controle in listaControles" :key="controle.id">
-              <td>{{ controle.id }}</td>
-              <td>{{ controle.comando_bomba ? "Ativa" : "Inativa"}}</td>
-              <td>{{ controle.comando_valvula ? "Ativa" : "Inativa"}}</td>
+              <td>{{ controle.estufa_id }}</td>
+              <td :class="{ 'ativo': controle.comando_bomba, 'inativo': !controle.comando_bomba }">{{ controle.comando_bomba ? "Ativa" : "Inativa" }}</td>
+              <td :class="{ 'ativo': controle.comando_valvula, 'inativo': !controle.comando_valvula }">{{ controle.comando_valvula ? "Ativa" : "Inativa" }}</td>
               <td><button class="button" @click=ligaDesliga(controle.id)>{{controle.comando_bomba && controle.comando_valvula ? "Ativo" : "Inativo" }}</button></td>
             </tr>
           </tbody>
@@ -33,9 +33,9 @@
   const mensagemPadrao = ""
 
   const ligaDesliga = (id) =>{
-    const bomba = listaControles.value[id-1].comando_bomba
-    const valvula = listaControles.value[id-1].comando_valvula
-
+    const controleEncontrado = listaControles.value.find(item => item.id === id);
+    const bomba = controleEncontrado.comando_bomba;
+    const valvula = controleEncontrado.comando_valvula;
     if(bomba && valvula){
       desligar(id)
     }else{
@@ -50,6 +50,7 @@
       } catch (error) {
           console.error('Erro ao ligar:', error);
       }
+      listarControles();
   };
   
   const desligar = async (id) => {
@@ -58,6 +59,7 @@
       } catch (error) {
           console.error('Erro ao desligar:', error);
       }
+      listarControles();
   };
 
   const listaControles = ref([]);
@@ -74,9 +76,7 @@
 
         // Converte a resposta para JSON
         listaControles.value = await response.json();
-        if(listaControles.length <= 0){
-          mensagemPadrao = "Sem controles para visualização"
-        }
+        console.log(listaControles)
       } catch (error) {
         console.error('Erro ao buscar dados:', error);
       }
@@ -163,6 +163,16 @@
 .custom-table th {
   background-color: #f2f2f2;
   font-weight: bold;
+}
+
+.ativo {
+  background-color: green;
+  color: white;
+}
+
+.inativo {
+  background-color: red;
+  color: white;
 }
   </style>
     
