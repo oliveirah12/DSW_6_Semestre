@@ -16,8 +16,9 @@ const dadosEstufaController = require('../controllers/dadosEstufaController')
 //router.post('/novoRelatorio', relatorioController.create);
 router.get('/relatorio', relatorioController.all);
 router.get('/relatorios/', relatorioController.one);
+router.delete('/deleterelatorio/:id', relatorioController.delete);
 //router.put('/atualizar/relatorio/:id', relatorioController.update);
-//router.delete('/delete/relatorio/:id', relatorioController.delete);
+
 
 
 //console.log("Rotas configuradas:", router.stack.map(layer => layer.route.path));

@@ -9,8 +9,8 @@
         </thead>
         <tbody>
           <tr>
-            <td class="table-pesquisa-datas"><input v-model="dataInicio" class="table-pesquisa-datas" type="date" id="dataInicio"></td>
-            <td class="table-pesquisa-datas"><input v-model="dataFinal" type="date" id="dataFinal"></td>
+            <td class="table-pesquisa-datas"><input v-model="dataInicio" class="datas" type="date" id="dataInicio"></td>
+            <td class="table-pesquisa-datas"><input v-model="dataFinal" class="datas" type="date" id="dataFinal"></td>
             <td><button class="button" @click="listarRelatorios">Listar Relatórios</button></td>
           </tr>
         </tbody>
@@ -23,18 +23,27 @@
       <table class="custom-table">
         <thead>
           <tr>
-            <th>Data</th>
-            <th>Hora</th>
+            <th>ID Estufa</th>
+            <th>Nome Estufa</th>
+            <th>Localização</th>
+            <th>Capacidade</th>
             <th>Umidade (%)</th>
             <th>Temperatura (°C)</th>
+            <th>Data</th>
+            <th>Hora</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="relatorio in listaRelatorios" :key="relatorio.id">
-            <td>{{ relatorio.data }}</td>
-            <td>{{ relatorio.hora  }}</td>
+            <td>{{ relatorio.estufa.id }}</td>
+            <td>{{ relatorio.estufa.nome }}</td>
+            <td>{{ relatorio.estufa.localizacao }}</td>
+            <td>{{ relatorio.estufa.capacidade }}</td>
             <td>{{ relatorio.umidade }}%</td>
             <td>{{ relatorio.temperatura }}°C</td>
+            <td>{{ formatDate(relatorio.data) }}</td>
+            <td>{{ relatorio.hora  }}</td>
+            <td><button class="button-delete" @click="excluirRelatorio(relatorio.id)"> Excluir</button></td>
           </tr>
         </tbody>
       </table>
@@ -44,6 +53,7 @@
 
 <script setup>
     import { ref } from 'vue';
+    import axios from 'axios';
     const listaRelatorios = ref([])
     const dataInicio = ref(null);
     const dataFinal = ref(null);
@@ -51,32 +61,55 @@
     
 
     const listarRelatorios = async () => {
+      let apiUrlRelatorios = `http://localhost:4000/relatorios?dataInicio=${dataInicio.value}&dataFim=${dataFinal.value}`;
       
-      console.log(dataInicio.value)
-      if (!dataInicio.value || !dataFinal.value) {
-        window.alert("Selecione um período de datas")
+      if (!dataInicio.value && !dataFinal.value) {
+        apiUrlRelatorios = `http://localhost:4000/relatorio`;
+      }else if(!dataInicio.value || !dataFinal.value){
+        window.alert("Selecione as duas datas")
         return
       }
 
-      const apiUrlRelatorios = `http://localhost:4000/relatorios?dataInicio=${dataInicio.value}&dataFim=${dataFinal.value}`;
+      
       
       try {
         // Faz a requisição GET para a API usando o Fetch API
           const response = await fetch(apiUrlRelatorios);
           console.log(response)
+
           if (!response.ok) {
             throw new Error('Erro ao buscar dados');
           }
 
           listaRelatorios.value = await response.json();
-          console.log(listaRelatorios)
-
-
+          console.log(listaRelatorios.data)
 
         } catch (error) {
           console.error('Erro ao buscar dados:', error);
         }
     }
+    
+    const excluirRelatorio = async (id) => {
+      try {
+
+        const response = await axios.delete(`http://localhost:4000/deleterelatorio/${id}`)
+        listarRelatorios()
+        console.log(response)
+        window.alert("Relatório Excluído")
+      } catch (error) {
+        window.alert("Erro ao excluir relatório")
+        console.log(error)
+      }
+    }
+
+    const formatDate = (input) => {
+      var datePart = input.match(/\d+/g),
+      year = datePart[0],
+      month = datePart[1], day = datePart[2];
+
+      return day+'/'+month+'/'+year;
+}
+
 
 </script>
 
@@ -90,6 +123,11 @@
   padding-top: 5%;
 }
 
+.datas{
+    border: 2px solid black;
+    padding: 10px;
+    border-radius: 5px;
+}
 
 .table-pesquisa-datas {
   padding-right: 100%;
@@ -151,10 +189,22 @@
     background-color: #75aae2;
   }
   
-  .manual-buttons {
-    display: flex;
-    justify-content: center;
+  .button-delete {
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100px;
   }
+
+  .button-delete:hover {
+    background-color: #75aae2;
+  }
+  
   
   .manual-buttons button {
     margin: 5px;

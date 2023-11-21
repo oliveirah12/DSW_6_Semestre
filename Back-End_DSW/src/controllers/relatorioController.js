@@ -1,10 +1,18 @@
+const Estufa = require("../../orm/models/estufaModel");
 const Relatorio = require("../../orm/models/relatorioModel");
 
 
 module.exports = {
   async all(request, response) {
     try {
-      const relatorio = await Relatorio.findAll();
+      const relatorio = await Relatorio.findAll({
+        include: [
+          {
+            model: Estufa,
+            attributes: ['id', 'nome', 'localizacao', 'capacidade'], // Selecione os atributos que você deseja da tabela 'DadosEstufa'
+          }
+        ],
+    });
       response.status(200).json(relatorio);
     } catch (error) {
       console.log(error);
@@ -22,15 +30,26 @@ module.exports = {
   },
 
   async one(request, response) {
-    
+    const dataInicio = new Date(request.query.dataInicio);
+    const dataFim = new Date(request.query.dataFim);
+    const { Op } = require('sequelize');
+
     try {
-      const dataInicio = async () => formatarDataIsoParaString(request.query.dataInicio);
-      const dataFim = async () => formatarDataIsoParaString(request.query.dataFim);
+      
       
       const relatorios = await Relatorio.findAll({
+        include: [
+          {
+            model: Estufa,
+            attributes: ['id', 'nome', 'localizacao', 'capacidade'], // Selecione os atributos que você deseja da tabela 'DadosEstufa'
+          }
+        ],
         where: {
           data: {
-            between: [new Date(dataInicio), new Date(dataFim)],
+            [Op.between]: [
+              dataInicio.toISOString(), // Converter para formato ISO
+              dataFim.toISOString(),    // Converter para formato ISO
+            ],
           },
         },
       });
