@@ -1,6 +1,23 @@
 <template>
+  <div class="table-pesquisa">
+      <table class="custom-table-pesquisa">
+        <thead>
+          <tr>
+            <th>Data Incial</th>
+            <th>Data Final</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="table-pesquisa-datas"><input v-model="dataInicio" class="table-pesquisa-datas" type="date" id="dataInicio"></td>
+            <td class="table-pesquisa-datas"><input v-model="dataFinal" type="date" id="dataFinal"></td>
+            <td><button class="button" @click="listarRelatorios">Listar Relatórios</button></td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+  
   <div class="page-container">
-    <button class="button" @click="listarRelatorios">Listar Relatórios</button>
     <br>
     <div v-if="listaRelatorios.length !== 0" class="table-container">
       <table class="custom-table">
@@ -25,42 +42,62 @@
   </div>
 </template>
 
-<script>
-import axios from 'axios';
+<script setup>
+    import { ref } from 'vue';
+    const listaRelatorios = ref([])
+    const dataInicio = ref(null);
+    const dataFinal = ref(null);
+
+    
+
+    const listarRelatorios = async () => {
+      
+      console.log(dataInicio.value)
+      if (!dataInicio.value || !dataFinal.value) {
+        window.alert("Selecione um período de datas")
+        return
+      }
+
+      const apiUrlRelatorios = `http://localhost:4000/relatorios?dataInicio=${dataInicio.value}&dataFim=${dataFinal.value}`;
+      
+      try {
+        // Faz a requisição GET para a API usando o Fetch API
+          const response = await fetch(apiUrlRelatorios);
+          console.log(response)
+          if (!response.ok) {
+            throw new Error('Erro ao buscar dados');
+          }
+
+          listaRelatorios.value = await response.json();
+          console.log(listaRelatorios)
 
 
-export default {
-  async setup() {
-    const response = await axios.get('http://localhost:4000/relatorio');
-    const listaRelatorios = response.data;
-    return { listaRelatorios };
-  },
-  methods: {
-    listarRelatorios() {
-      axios.get(`http://localhost:4000/relatorio`)
-        .then(response => {
-          this.listaRelatorios = response.data;
-        })
-        .catch(error => {
-          console.error('Erro ao listar relatórios:', error);
-        });
-    },
-    formatarData(data) {
-      const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
-      return new Date(data).toLocaleDateString('pt-BR', options);
-    },
-    formatarHora(data) {
-      const options = { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false };
-      return new Date(data).toLocaleTimeString('pt-BR', options);
+
+        } catch (error) {
+          console.error('Erro ao buscar dados:', error);
+        }
     }
-  }
-}
+
 </script>
 
 <style lang="scss" scoped>
-.page-container {
+  
+.table-pesquisa {
   display: flex;
   justify-content: center;
+  align-items: center;
+  column-gap: 5%;
+  padding-top: 5%;
+}
+
+
+.table-pesquisa-datas {
+  padding-right: 100%;
+}
+
+.page-container {
+  display: flex;
+  justify-content: flex-start;
   align-items: center;
   height: 100vh;
   flex-direction: column;
@@ -72,9 +109,19 @@ export default {
   overflow-y: auto; /* Adiciona a barra de rolagem vertical */
 }
 
+
 .custom-table {
   width: 100%; /* Ajustado para 100% para preencher o contêiner */
   border-collapse: collapse;
+}
+
+.custom-table-pesquisa {
+  width: 60%; /* Ajustado para 100% para preencher o contêiner */
+  border-collapse: collapse;
+}
+
+.custom-table-pesquisa th, .custom-table-pesquisa td {
+  text-align: start;
 }
 
 .custom-table th, .custom-table td {

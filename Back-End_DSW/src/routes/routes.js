@@ -15,7 +15,7 @@ const dadosEstufaController = require('../controllers/dadosEstufaController')
 // Rotas para relatórios
 //router.post('/novoRelatorio', relatorioController.create);
 router.get('/relatorio', relatorioController.all);
-//router.get('/relatorio/:id', relatorioController.one);
+router.get('/relatorios/', relatorioController.one);
 //router.put('/atualizar/relatorio/:id', relatorioController.update);
 //router.delete('/delete/relatorio/:id', relatorioController.delete);
 
