@@ -183,7 +183,7 @@
       attAuto.value = !attAuto.value
       if(attAuto.value == true){
         atualizarAuto()
-        myInterval = setInterval(atualizarAuto, 5000);
+        myInterval = setInterval(atualizarAuto, 10000);
       }else{
         clearInterval(myInterval)
         console.log('Att Auto Desligada')
