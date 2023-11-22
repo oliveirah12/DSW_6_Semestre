@@ -1,6 +1,9 @@
 <template>
   <div class="page-container">
-    <button class="button" @click= "listarControles">Listar Controles</button>
+    <div>
+      <button class="button" @click= "listarControles">Listar Controles</button>
+      <button style="width: 125px;" :style="{ backgroundColor: attAuto ? 'Green' : 'Red'}" class="button" @click="ligaDesligaAuto">Tempo Real</button>
+    </div>
     <br>
     <div>{{ mensagemPadrao }}</div>
     <div v-if="listaControles.length !== 0" class="table-container">
@@ -17,7 +20,7 @@
               <td>{{ controle.estufa_id }}</td>
               <td :class="{ 'ativo': controle.comando_bomba, 'inativo': !controle.comando_bomba }">{{ controle.comando_bomba ? "Ativa" : "Inativa" }}</td>
               <td :class="{ 'ativo': controle.comando_valvula, 'inativo': !controle.comando_valvula }">{{ controle.comando_valvula ? "Ativa" : "Inativa" }}</td>
-              <td><button class="button" @click=ligaDesliga(controle.id)>{{controle.comando_bomba && controle.comando_valvula ? "Ativo" : "Inativo" }}</button></td>
+              <td><button class="button" @click=ligaDesliga(controle.id) :style="{ backgroundColor: controle.comando_bomba && controle.comando_valvula ? 'Green' : 'Red'}">{{controle.comando_bomba && controle.comando_valvula ? "Ativo" : "Inativo" }}</button></td>
             </tr>
           </tbody>
         </table>
@@ -76,7 +79,6 @@
 
         // Converte a resposta para JSON
         listaControles.value = await response.json();
-        console.log(listaControles)
       } catch (error) {
         console.error('Erro ao buscar dados:', error);
       }
@@ -85,6 +87,31 @@
    const formatarHora = (data) => {
       const options = { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false };
       return new Date(data).toLocaleTimeString('pt-BR', options);
+    }
+
+    let attAuto = ref()
+    attAuto.value = false
+    let myInterval
+
+    const ligaDesligaAuto = () =>{
+      attAuto.value = !attAuto.value
+      if(attAuto.value == true){
+        atualizarAuto()
+        myInterval = setInterval(atualizarAuto, 5000);
+      }else{
+        clearInterval(myInterval)
+        console.log('Att Auto Desligada')
+      }
+      
+    }
+
+    const atualizarAuto = () => {
+      if(attAuto.value == true){
+        listarControles()
+        console.log("Atualizado")
+      }else{
+        console.log(attAuto.value + ' - ELSE')
+      }
     }
 
   

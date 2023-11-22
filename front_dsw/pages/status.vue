@@ -1,6 +1,9 @@
 <template>
   <div class="page-container">
-    <button class="button" @click= "listarEstufas">Listar status estufas</button>
+    <div>
+      <button class="button" @click= "listarEstufas">Listar Estufas</button>
+      <button style="width: 125px;" :style="{ backgroundColor: attAuto ? 'Green' : 'Red'}" class="button" @click="ligaDesligaAuto">Tempo Real</button>
+    </div>
     <br>
     <div class="botoesIncluiExclui">
         <button class="button_include" @click="mostrarFormulario" :style="{ backgroundColor: botaoIncluirDesabilitado ? 'gray' : '#007BFF', cursor:botaoIncluirDesabilitado ? 'not-allowed' : 'pointer'}" :disabled="botaoIncluirDesabilitado">Incluir Estufa</button>
@@ -44,7 +47,7 @@
               <td>{{ estufas.localizacao }}</td>
               <td>{{ estufas.capacidade  }}</td>
               <td>{{ estufas.dadosEstufa.temperatura }} Cº</td>
-              <td>{{ estufas.dadosEstufa.umidade }}</td>
+              <td>{{ estufas.dadosEstufa.umidade }}%</td>
               <td>{{ estufas.dadosEstufa.consumo_agua }}L/h</td>
               <td>{{ estufas.dadosEstufa.timestamp }}</td>
               <td><button class="button_delete" @click="deletarEstufa(estufas.id)">Deletar</button></td>
@@ -67,7 +70,6 @@
   import { ref } from 'vue';
   import axios from 'axios';
   
-
     const listaEstufas = ref([])
 
     const listarEstufas = async () => {
@@ -76,14 +78,11 @@
       try {
         // Faz a requisição GET para a API usando o Fetch API
           const response = await fetch(apiUrlEstufas);
-          console.log(response)
           if (!response.ok) {
             throw new Error('Erro ao buscar dados linha 60');
           }
 
           listaEstufas.value = await response.json();
-          console.log(listaEstufas)
-
 
 
         } catch (error) {
@@ -176,6 +175,31 @@
     }
   };
 
+    let attAuto = ref()
+    attAuto.value = false
+    let myInterval
+
+    const ligaDesligaAuto = () =>{
+      attAuto.value = !attAuto.value
+      if(attAuto.value == true){
+        atualizarAuto()
+        myInterval = setInterval(atualizarAuto, 5000);
+      }else{
+        clearInterval(myInterval)
+        console.log('Att Auto Desligada')
+      }
+      
+    }
+
+    const atualizarAuto = () => {
+      if(attAuto.value == true){
+        listarEstufas()
+        console.log("Atualizado")
+      }else{
+        console.log(attAuto.value + ' - ELSE')
+      }
+    }
+
 
     let botaoIncluirDesabilitado = ref(false);
     const mostrarFormulario = () => {
@@ -237,7 +261,7 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    width: 200px;
+    width: 170px;
   }
   .button_delete {
     margin: 10px;
