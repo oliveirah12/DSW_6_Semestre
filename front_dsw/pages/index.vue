@@ -1,38 +1,20 @@
 <template>
   <div class="page-container">
     <div class="button-container">
-      <button class="button" @click="toggleManual('automatic')">Automático</button>
-      <button class="button" @click="toggleManual('manual')">Manual</button>
-      <div v-if="showManualButtons" class="manual-buttons">
-        <button @click="ligar">Ligar</button>
-        <button @click="desligar">Desligar</button>
-      </div>
+      <button class="button" @click="redirectToStatus">Home</button>
     </div>
   </div>
 </template>
   
-<script setup>
-import { ref } from 'vue';
+<script>
+  export default {
+      methods: {
+        redirectToStatus() {
+          this.$router.push('/status'); 
+        },
+      },
+    }
 
-const showManualButtons = ref(false);
-
-const toggleManual = (mode) => {
-  if (mode === 'manual') {
-    showManualButtons.value = !showManualButtons.value;
-  } else {
-    showManualButtons.value = false;
-  }
-};
-
-const ligar = () => {
-  // Implemente a lógica para ligar
-  console.log('Ligado');
-};
-
-const desligar = () => {
-  // Implemente a lógica para desligar
-  console.log('Desligado');
-};
 </script>
   
 <style lang="scss" scoped>
