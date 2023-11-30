@@ -21,6 +21,7 @@
 
 <script setup>
 
+  import axios from 'axios';
   
   
   const data = reactive({
@@ -28,15 +29,19 @@
     password: ''
   });
 
-  const login = () => {
-    // Lógica de autenticação aqui
+  const login = async () => {
     console.log('Username:', data.username);
     console.log('Password:', data.password);
+
+    const auth = 'http://localhost:5000/auth/login';
+
 
     // Resetar campos após o login (opcional)
     data.username = '';
     data.password = '';
   };
+
+
 </script>
 
 <style lang="scss" scoped>
