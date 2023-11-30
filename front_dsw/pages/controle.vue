@@ -1,4 +1,5 @@
 <template>
+  <Header/>
   <div class="page-container">
     <div>
       <button class="button" @click= "listarControles">Listar Controles</button>

@@ -1,4 +1,5 @@
 <template>
+    <Header/>
   <div class="table-pesquisa">
       <table class="custom-table-pesquisa">
         <thead>

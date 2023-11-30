@@ -1,5 +1,4 @@
 <template>
-    <Header />
 
     <body>
         <div></div>
