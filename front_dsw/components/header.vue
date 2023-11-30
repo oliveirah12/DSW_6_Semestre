@@ -1,5 +1,5 @@
 <template>
-    <header>
+    <header v-if="showHeader">
       <div class="left-buttons">
         <button @click="redirectToStatus">Status</button>
         <button @click="redirectToControle">Controle</button>
@@ -13,6 +13,11 @@
   
   <script>
   export default {
+    data(){
+      return{
+        showHeader:true
+      }
+    },
     name: 'Header',
     methods: {
       redirectToStatus() {
