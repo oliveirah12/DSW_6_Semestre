@@ -72,9 +72,10 @@
   import axios from 'axios';
   
     const listaEstufas = ref([])
+    const token = localStorage.getItem('token')
 
     const listarEstufas = async () => {
-      const apiUrlEstufas = 'http://localhost:4000/estufas';
+      const apiUrlEstufas = `http://localhost:4000/estufas/${token}`;
 
       try {
         // Faz a requisição GET para a API usando o Fetch API

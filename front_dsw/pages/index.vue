@@ -4,41 +4,79 @@
       <h2 class="label">Login</h2>
       <hr>
       <br>
-      <form class="form" @submit.prevent="login">
-        <label class="label" for="username">Usuário:</label>
-        <input class="input" type="text" id="username" v-model="username" required>
 
-        <label class="label" for="password">Senha:</label>
-        <input class="input" type="password" id="password" v-model="password" required>
+      <form class="form" @submit.prevent="loginEstufa">
+        <label class="label" for="user">Usuário:</label>
+        <input class="input" type="text" id="loginUser" v-model="data.loginUser" required>
+
+        <label class="label" for="pass">Senha:</label>
+        <input class="input" type="password" id="senha" v-model="data.senha" required>
 
         <button class="button" type="submit">Entrar</button>
         <label style="align-self: center;">ou</label>
-        <button class="button">Cadastre-se</button>
       </form>
+
+      <button class="button" @click="irParaStatus">Cadastre-se</button>
     </div>
   </div>
 </template>
 
 <script setup>
 
+  import { reactive } from 'vue';
+  import { useRouter } from 'vue-router';
   import axios from 'axios';
+
+  const router = useRouter();
   
   
   const data = reactive({
-    username: '',
-    password: ''
+    loginUser: '',
+    senha: ''
   });
 
-  const login = async () => {
-    console.log('Username:', data.username);
-    console.log('Password:', data.password);
+  const loginEstufa = async () => {
+  try {
 
-    const auth = 'http://localhost:5000/auth/login';
+    const response = await axios.post('http://localhost:5000/auth/login', {
+      login: data.loginUser,
+      senha: data.senha
+    });
+
+    console.log(response)
+    
+    if(response.status === 404){
+      window.alert("Login não existe")
+    }
+
+    if(response.status === 422){
+      window.alert("Senha incorreta")
+    }
 
 
-    // Resetar campos após o login (opcional)
-    data.username = '';
-    data.password = '';
+    if (response.status === 201) {
+      console.log('Login bem-sucedido');
+
+      const token = response.data.token;
+
+      window.alert("Login Bem sucedido")
+
+      localStorage.setItem('token', token);
+
+      irParaStatus();
+    } else {
+      console.error('Falha no login');
+      // Tratar falha no login, exibir mensagem de erro, etc.
+    }
+  } catch (error) {
+    console.error('Erro durante o login:', error);
+  }
+};
+
+  
+
+  const irParaStatus = () => {  
+    router.push('status');
   };
 
 
@@ -61,6 +99,8 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-top: 5%;
+  display: flex;
+  flex-direction: column;
 }
 
 .form {
