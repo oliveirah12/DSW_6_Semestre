@@ -1,6 +1,6 @@
 <template>
     <footer>
-      <p>&copy; {{ currentYear }} Seu Nome ou Nome da Empresa</p>
+      <p>&copy; {{ currentYear }} IFSP - BRA</p>
     </footer>
   </template>
   

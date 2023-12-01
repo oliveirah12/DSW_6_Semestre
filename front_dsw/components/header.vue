@@ -6,12 +6,13 @@
         <button @click="redirectToRelatorios">Relatórios</button>
       </div>
       <div class="right-buttons">
-        <button @click="signOut">Sign Out</button>
+        <button @click="signOut">Deslogar</button>
       </div>
     </header>
   </template>
   
   <script>
+  
   export default {
     data(){
       return{
@@ -33,9 +34,11 @@
         this.$router.push('/relatorios'); 
       },
       signOut() {
-        // Implemente aqui a lógica para sair do sistema (por exemplo, deslogar o usuário)
-        // Isso pode envolver redirecionar para a página de login ou limpar as informações de autenticação.
-        // Exemplo: this.$router.push('/login');
+        if(localStorage.getItem('token')){
+          window.alert('Usuário deslogado com sucesso')
+        }
+          localStorage.setItem('token', '')
+          this.$router.push('/')  
       },
     },
   }
